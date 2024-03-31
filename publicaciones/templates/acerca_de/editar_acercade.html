@@ -1,0 +1,28 @@
+{% extends '..\templates\base.html' %} {% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Editar Acerca de</title>
+  <link rel="stylesheet" type="text/css" href="tu-archivo-de-estilos.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div class="crear-noticia-container">
+    <h1 class="titulo-h1">Acerca De</h1>
+    <hr class="titulo-hr" />
+      <form method="post">
+        {% csrf_token %}
+        {{ noticia_form.as_p }}
+        {{ noticia_form.media }}
+        <div class="botones-container">
+          <button type="submit">Guardar</button>
+          <a class="link-editar" href="{% url 'home_acercade' %}" style="font-size: 15px">Volver</a>
+        </div>
+      </form>
+  </div>
+</body>
+<script>
+  CKEDITOR.replace("new_cuerpo"); // Inicializa CKEditor en el campo de texto
+</script>
+</html>
+{% endblock %}

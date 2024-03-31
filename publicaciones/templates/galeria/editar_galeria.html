@@ -1,0 +1,105 @@
+{% extends '..\templates\base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% block extrascripts %}
+        <script type="text/javascript" id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js">
+        </script>
+    {% endblock extrascripts %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="crear-noticia-container">
+        <h1 class="titulo-h1">Editar Galería</h1>
+        <hr class="titulo-hr" />
+        <form method="post" enctype="multipart/form-data" class="form-container">
+            {% csrf_token %}
+            <div class="contenedor-estado">
+                <div class="form-field">
+                    <label for="id_estado">Estado</label>{{ galeria_form.estado }}
+                </div>
+            </div>
+            <div class="image-upload-container">
+                <label for="{{ galeria_form.imagen_portada.id_for_label }}" class="custom-file-upload">
+                    <label for="id_imagen_portada">Imagen portada</label>
+                </label>
+                <input type="file" name="{{ galeria_form.imagen_portada.name }}" accept="image/*" id="{{ galeria_form.imagen_portada.id_for_label }}" style="display: none;">
+                <button type="button" class="custom-file-button" onclick="document.getElementById('{{ galeria_form.imagen_portada.id_for_label }}').click();">
+                    Cargar
+                </button>
+                <div class="uploaded-image-name">
+                    <span id="current-image-name">{{ galeria.imagen_portada.name }}</span>
+                </div>
+            </div>
+            <div class="image-upload-container">
+                <label for="{{ galeria_form.imagen_marcador.id_for_label }}" class="custom-file-upload">
+                    <label for="id_imagen_marcador">Imagen marcador</label>
+                </label>
+                <input type="file" name="{{ galeria_form.imagen_marcador.name }}" accept="image/*" id="{{ galeria_form.imagen_marcador.id_for_label }}" style="display: none;">
+                <button type="button" class="custom-file-button" onclick="document.getElementById('{{ galeria_form.imagen_marcador.id_for_label }}').click();">
+                    Cargar
+                </button>
+                <div class="uploaded-image-name">
+                    <span id="current-image-name2">{{ galeria.imagen_marcador.name }}</span>
+                </div>
+            </div>
+            <div class="form-field">
+                <label for="id_tags">Tags</label> {{ galeria_form.tags }}
+              </div>
+              <div class="form-field">
+                <label for="id_titulo">Título</label>{{ galeria_form.titulo }}
+              </div>
+              <div class="form-field">
+                <label for="id_equipamiento">Equipamiento</label>{{ galeria_form.equipamiento }}
+              </div>
+              <div class="form-field">
+                <label for="id_detalle">Detalles</label>{{ galeria_form.detalle }}
+              </div>
+              <div class="form-field">
+                <label for="id_cuerpo">Descripción</label>{{ galeria_form.cuerpo }}
+              </div>
+              <div class="form-field">
+                {{ galeria_form.media.label_tag }} {{ galeria_form.media }}
+              </div>
+            <button type="submit">Guardar Cambios</button>
+        </form>
+        
+        <a href="{% url 'home_galeria' %}">Home Galeria</a> |
+        <a href="{% url 'lista_galeria' %}">Lista Galeria</a>
+    </div>
+
+    <script>
+        const inputImage = document.querySelector('#{{ galeria_form.imagen_portada.id_for_label }}');
+        const currentImageName = document.querySelector('#current-image-name');
+        const customFileButton = document.querySelector('.custom-file-button');
+
+        inputImage.addEventListener('change', function () {
+            if (inputImage.files.length > 0) {
+                currentImageName.textContent = inputImage.files[0].name;
+            } else {
+                currentImageName.textContent = '{{ galeria.imagen_portada.name }}';
+            }
+        });
+
+        
+    </script>
+    <script>
+        const inputImage2 = document.querySelector('#{{ galeria_form.imagen_marcador.id_for_label }}');
+        const currentImageName2 = document.querySelector('#current-image-name2');
+        const customFileButton2 = document.querySelector('.custom-file-button');
+
+        inputImage2.addEventListener('change', function () {
+            if (inputImage2.files.length > 0) {
+                currentImageName2.textContent = inputImage2.files[0].name;
+            } else {
+                currentImageName2.textContent = '{{ galeria.imagen_marcador.name }}';
+            }
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

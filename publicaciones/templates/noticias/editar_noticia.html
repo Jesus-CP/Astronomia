@@ -1,0 +1,94 @@
+{% extends '..\templates\base.html' %} {% block content %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% block extrascripts %}
+    <script
+      type="text/javascript"
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js"
+    ></script>
+    {% endblock extrascripts %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div class="crear-noticia-container">
+      <h1 class="titulo-h1">Editar Noticia</h1>
+      <hr class="titulo-hr" />
+      <form method="post" enctype="multipart/form-data" class="form-container">
+        {% csrf_token %}
+        <div class="contenedor-estado">
+          <div class="form-field">
+            <label for="id_estado">Estado</label>{{ noticia_form.estado }}
+          </div>
+        </div>
+        <div class="image-upload-container">
+          <label
+            for="{{ noticia_form.imagen_portada.id_for_label }}"
+            class="custom-file-upload"
+          >
+            <label for="id_imagen_portada">Imagen portada</label>
+          </label>
+          <input
+            type="file"
+            name="{{ noticia_form.imagen_portada.name }}"
+            accept="image/*"
+            id="{{ noticia_form.imagen_portada.id_for_label }}"
+            style="display: none"
+          />
+          <button
+            type="button"
+            class="custom-file-button"
+            onclick="document.getElementById('{{ noticia_form.imagen_portada.id_for_label }}').click();"
+          >
+            Cargar
+          </button>
+          <div class="uploaded-image-name">
+            <span id="current-image-name"
+              >{{ noticia.imagen_portada.name }}</span
+            >
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="id_tags">Tags</label>{{ noticia_form.tags }}
+        </div>
+        <div class="form-field">
+          <label for="id_titulo">Titulo</label>{{ noticia_form.titulo }}
+        </div>
+        <div class="form-field">
+          <label for="id_bajada">Bajada</label>{{ noticia_form.bajada }}
+        </div>
+        <div class="form-field">
+          <label for="id_cuerpo">Cuerpo</label>{{ noticia_form.cuerpo }}
+        </div>
+        <div class="form-field">
+          {{ noticia_form.media.label_tag }} {{ noticia_form.media }}
+        </div>
+        <button type="submit">Guardar Cambios</button>
+      </form>
+
+      <a href="{% url 'home_noticias' %}">Home Noticias</a> |
+      <a href="{% url 'lista_noticias' %}">Lista Noticias</a>
+    </div>
+
+    <script>
+      const inputImage = document.querySelector(
+        "#{{ noticia_form.imagen_portada.id_for_label }}"
+      );
+      const currentImageName = document.querySelector("#current-image-name");
+      const customFileButton = document.querySelector(".custom-file-button");
+
+      inputImage.addEventListener("change", function () {
+        if (inputImage.files.length > 0) {
+          currentImageName.textContent = inputImage.files[0].name;
+        } else {
+          currentImageName.textContent = "{{ noticia.imagen_portada.name }}";
+        }
+      });
+    </script>
+  </body>
+</html>
+{% endblock %}

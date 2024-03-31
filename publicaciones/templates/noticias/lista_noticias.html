@@ -1,0 +1,104 @@
+{% extends '..\templates\base.html' %} {% block content %}
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Noticias</title>
+  </head>
+  <div class="lista">
+    <br />
+    <h1 class="titulo-h1">Lista de Noticias</h1>
+    <hr class="titulo-hr" />
+    <form class="search-form">
+      {% if user.is_authenticated %}
+      <select name="estado" class="search-select">
+        <option value="">Todo</option>
+        <option value="Publicado">Publicado</option>
+        <option value="Borrador">Borrador</option>
+        <option value="Archivado">Archivado</option>
+        <!-- Agrega más estados si los tienes -->
+      </select>
+      {% endif %}
+      <input
+        class="search-input"
+        type="text"
+        name="q"
+        placeholder="Buscar por título"
+      />
+      <button type="submit" class="search-button">Buscar</button>
+    </form>
+    <table class="tabla-noticias">
+      <tr>
+        <th width="65%" scope="col">Título</th>
+        <th width="20%" scope="col">Fecha de Creación</th>
+        <th width="5%" scope="col">Estado</th>
+        <th width="5%" scope="col">Editar</th>
+        <th width="5%" scope="col">Eliminar</th>
+      </tr>
+      {% for noticia in noticias %}
+      <tr>
+        <td>{{ noticia.titulo }}</td>
+        <td>{{ noticia.fecha_creacion }}</td>
+        <td>{{ noticia.estado }}</td>
+        <td>
+          <a href="{% url 'editar_noticia' id_noticia=noticia.idPublicacion %}"
+            ><i class="bi bi-pencil-square"></i
+          ></a>
+        </td>
+        <td>
+          <a href="#" class="eliminar-enlace" data-url="{% url 'eliminar_noticia' noticia.idPublicacion %}">
+            <i class="bi bi-x-square"></i>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <div class="pagination-container">
+      <div class="pagination">
+        <span>
+          {% if noticias.number > 1 %}
+            <a href="?page=1" class="pagination-link double-left" style="color: #FFA500;">&lt &lt</a>
+          {% else %}
+            <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&lt &lt</a>
+          {% endif %}
+          
+          {% if noticias.has_previous %}
+            <a href="?page={{ noticias.previous_page_number }}" class="pagination-link" style="color: #FFA500;">&lt</a>
+          {% else %}
+            <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&lt</a>
+          {% endif %}
+        </span>
+    
+        <span class="pagination-text">
+          Pagina {{ noticias.number }}
+        </span>
+    
+        <span>
+          {% if noticias.has_next %}
+            <a href="?page={{ noticias.next_page_number }}" class="pagination-link" style="color: #FFA500;">&gt</a>
+            <a href="?page={{ noticias.paginator.num_pages }}" class="pagination-link double-right" style="color: #FFA500;">&gt &gt</a>
+          {% else %}
+            <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&gt</a>
+            <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&gt &gt</a>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+
+    <a href="{% url 'crear_noticia' %}">Crear Noticia</a>
+    <p></p>
+    <a href="{% url 'home_noticias' %}">Home Noticias</a>
+  </div>
+  <div id="confirmarBorradoModal2" class="modal2">
+    <div class="modal-content2">
+      <p>¿Estas seguro que deseas borrar esta publicación?</p>
+      <div class="modal-buttons">
+        <button id="siBorrar">Sí</button>
+        <button id="noBorrar">No</button>
+      </div>
+    </div>
+  </div>
+</html>
+{% endblock %}

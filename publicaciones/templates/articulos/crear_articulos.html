@@ -1,0 +1,80 @@
+{% extends '..\templates\base.html' %} {% block content %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div class="crear-noticia-container">
+      <h1 class="titulo-h1">Crear Artículo</h1>
+      <hr class="titulo-hr" />
+
+      <form method="post" enctype="multipart/form-data" class="form-container">
+        {% csrf_token %}
+        <div class="contenedor-estado">
+          <div class="form-field">
+            <label for="id_estado">Estado</label>{{ articulos_form.estado }}
+          </div>
+        </div>
+        <div class="image-upload-container">
+          <label
+            for="{{ articulos_form.imagen_portada.id_for_label }}"
+            class="custom-file-upload"
+          >
+            <label for="id_imagen_portada">Imagen de Portada</label>
+          </label>
+          <input
+            type="file"
+            name="{{ articulos_form.imagen_portada.name }}"
+            accept="image/*"
+            id="{{ articulos_form.imagen_portada.id_for_label }}"
+            style="display: none"
+            onchange="displayImageName(this);"
+          />
+          <button
+            type="button"
+            class="custom-file-button"
+            onclick="document.getElementById('{{ articulos_form.imagen_portada.id_for_label }}').click();"
+          >
+            Cargar
+          </button>
+          <div class="uploaded-image-name">
+            <span id="current-image-name"></span>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="id_tags">Tags</label>{{ articulos_form.tags }}
+        </div>
+        <div class="form-field">
+          <label for="id_titulo">Título</label>{{ articulos_form.titulo }}
+        </div>
+        <div class="form-field">
+          <label for="id_bajada">Bajada</label>{{ articulos_form.bajada }}
+        </div>
+        <div class="form-field">
+          <label for="id_cuerpo">Cuerpo</label>{{ articulos_form.cuerpo }}
+        </div>
+        <div class="form-field">
+          {{ articulos_form.media.label_tag }} {{ articulos_form.media }}
+        </div>
+        <button type="submit">Guardar Cambios</button>
+      </form>
+
+      <a href="{% url 'home_articulos' %}">Home Artículos</a> |
+      <a href="{% url 'lista_articulos' %}">Lista Artículos</a>
+    </div>
+    <script>
+      function displayImageName(input) {
+        const currentImageName = document.querySelector("#current-image-name");
+        if (input.files.length > 0) {
+          currentImageName.textContent = input.files[0].name;
+        } else {
+          currentImageName.textContent = "";
+        }
+      }
+    </script>
+  </body>
+</html>
+{% endblock %}

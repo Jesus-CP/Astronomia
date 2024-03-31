@@ -1,0 +1,78 @@
+{%extends '..\templates\base.html'%} {%block content%}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AstroNexo</title>
+
+    <!-- Contenido -->
+
+    <header>
+      <h1 class="titulo-h1">Editar Perfil</h1>
+      <h2 class="titulo-h2">Introduzca sus datos</h2>
+    </header>
+    <div>
+      <div class="login-container">
+        <a href="{% url 'perfil' %}" class="icon-link"
+          ><i class="bi bi-arrow-return-left"></i
+        ></a>
+        <form method="post" class="form-login">
+          {% csrf_token %}
+          <div>
+            <label for="id_usernme" class="login-1">Usuario</label>
+            <input
+              type="text"
+              class="login-2"
+              name="username"
+              value="{{ form.initial.username }}"
+              required
+              id="id_username"
+            />
+          </div>
+          <div>
+            <label for="id_first_name" class="login-1">Nombre</label>
+            <input
+              type="text"
+              class="login-2"
+              name="first_name"
+              value="{{ form.initial.first_name }}"
+              required
+              id="id_first_name"
+            />
+          </div>
+          <div>
+            <label for="id_last_name" class="login-1">Apellido</label>
+            <input
+              type="text"
+              class="login-2"
+              name="last_name"
+              value="{{ form.initial.last_name }}"
+              required
+              id="id_last_name"
+            />
+          </div>
+          <div>
+            <label for="id_emil" class="login-1">Correo Electronico</label>
+            <input
+              type="email"
+              class="login-2"
+              name="email"
+              value="{{ form.initial.email }}"
+              required
+              id="id_email"
+            />
+          </div>
+          <hr />
+          <button type="submit" class="button-login">Actualizar</button>
+          <a href="{% url 'perfil' %}"></a>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer -->
+
+    {% endblock %}
+  </head>
+</html>

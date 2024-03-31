@@ -1,0 +1,155 @@
+{%extends '..\templates\base.html'%} {%block content%}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AstroNexo</title>
+
+  </head>
+      <!-- Contenido -->
+        {% if user.is_authenticated %}
+      <div class="contenido-height">
+        <header>
+          <h1 class="titulo-h1">Bienvenido a AstroNexo</h1>
+          <h2 class="titulo-h2">Vista de Administrador</h2>
+        </header>
+        <div class="chart-container">
+          <h5>Gráfico de Noticias</h5>
+          <div>
+            <canvas id="chart_pie_noticias"></canvas>
+          </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+          const ctxPieNoticias = document.getElementById('chart_pie_noticias');
+  
+          new Chart(ctxPieNoticias, {
+            type: 'pie',
+            data: {
+              labels: {{ labels_pie_noticias|safe }},
+              datasets: [
+                {
+                  data: {{ data_pie_noticias|safe }},
+                  backgroundColor: ['rgba(212, 121, 0)', 'rgba(133, 110, 80)', 'rgba(154, 113, 59)'],
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+            },
+          });
+        </script>
+        <div class="chart-container">
+          <h5>Gráfico de Artículos</h5>
+          <div>
+            <canvas id="chart_pie_articulos"></canvas>
+          </div>
+        </div>
+        <script>
+          const ctxPieArticulos = document.getElementById('chart_pie_articulos');
+  
+          new Chart(ctxPieArticulos, {
+            type: 'pie',
+            data: {
+              labels: {{ labels_pie_articulos|safe }},
+              datasets: [
+                {
+                  data: {{ data_pie_articulos|safe }},
+                  backgroundColor: ['rgba(212, 121, 0)', 'rgba(133, 110, 80)', 'rgba(154, 113, 59)'],
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+            },
+          });
+        </script>
+                <div class="chart-container">
+                  <h5>Gráfico de Galería</h5>
+                  <div>
+                    <canvas id="chart_pie_galerias"></canvas>
+                  </div>
+                </div>
+                <script>
+                  const ctxPieGalerias = document.getElementById('chart_pie_galerias');
+          
+                  new Chart(ctxPieGalerias, {
+                    type: 'pie',
+                    data: {
+                      labels: {{ labels_pie_galerias|safe }},
+                      datasets: [
+                        {
+                          data: {{ data_pie_galerias|safe }},
+                          backgroundColor: ['rgba(212, 121, 0)', 'rgba(133, 110, 80)', 'rgba(154, 113, 59)'],
+                        },
+                      ],
+                    },
+                    options: {
+                      responsive: true,
+                      maintainAspectRatio: false,
+                    },
+                  });
+                </script>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <header>
+    <div class="text-center content-container">
+      <h1 class="titulo-h1-home">
+        Bienvenido a <span class="titulo-h1 titulo-h1-bold">AstroNexo</span>
+      </h1>
+      <p class="titulo-h2-home">
+        Lugar de aficionados de la
+        <span class="emphasized-text">astronomía</span>
+      </p>
+      <p class="home-presentacion">
+        <span class="emphasized-text">AstroNexo</span> es tu ventana al
+        universo. Sumérgete en la
+        majestuosidad del universo a través
+        de nuestra plataforma, donde te ofrecemos una colección excepcional de
+        imágenes astronómicas en alta
+        resolución. Descubre la belleza y el detalle de los astros que pueblan
+        el vasto firmamento. ¡Prepárate para explorar el espacio como nunca
+        antes en <span class="emphasized-text">AstroNexo</span>!
+      </p>
+      <div class="card-container">
+        <div class="card-titulo">
+          <h3>Galería</h3>
+          <div class="card">
+              <img src="{% static 'assets/img/1.png' %}" alt="Imagen 2">
+              <a href="{% url 'home_galeria' %}" class="overlay">
+                  <h1 class="truncate-text-title">Visiones Asombrosas del Espacio: Nuestra Galería Celestial</h1>
+                  <p class="truncate-text">Embárcate en un viaje visual único a través de nuestra Galería de Maravillas Espaciales.</p>
+              </a>
+          </div>
+      </div>
+        <div class="card-titulo">
+            <h3>Noticia</h3>
+            <div class="card">
+                  <img src="{% static 'assets/img/2.jpg' %}" alt="HomeNoticia" />
+                  <a href="{% url 'home_noticias' %}" class="overlay">
+                      <h1>Descubre las Últimas Noticias del Universo</h1>
+                      <p class="truncate-text">Explora un vasto cosmos de conocimiento con las noticias astronómicas más emocionantes.</p>
+                  </a>    
+            </div>
+        </div>
+        <div class="card-titulo">
+            <h3>Artículo</h3>
+            <div class="card">
+                <img src="{% static 'assets/img/3.jpg' %}" alt="HomeArticulos" />
+                <a href="{% url 'home_articulos' %}" class="overlay">
+                    <h1>Artículos Relacionados a la Astronomía</h1>
+                    <p class="truncate-text">Nuestros apasionantes artículos te guiarán a través de los misterios del espacio y la astronomía.</p>
+                </a>
+            </div>
+        </div>
+    </div>
+    </div>
+  </header>
+
+  {% endif %} {%endblock%}
+</html>

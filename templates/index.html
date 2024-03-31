@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog Index</title>
+</head>
+<body>
+    <h1>Pagina principal</h1>
+    
+    <p></p>
+    <strong>Publicaciones: </strong>
+    <li><a href="{% url 'home_galeria' %}">Galeria</a></li>
+    <li><a href="{% url 'home_articulo' %}">Articulos</a></li>
+    <li><a href="{% url 'home_noticia' %}">Noticias</a></li>
+    <strong>Seccion admin: </strong>
+    {% if user.is_authenticated %}
+    <li><a href="{% url 'list_perfil' %}">Listar usuario</a></li>
+    <li><a href="{% url 'perfil' %}">Crear usuario</a></li>
+
+
+    <li><a href="{% url 'logout' %}">Cerrar sesion</a></li>
+    {% else %}
+    <li><a href="{% url 'login' %}">Iniciar sesion</a></li>
+    <p></p>
+
+    {% endif %}
+
+</body>
+</html>

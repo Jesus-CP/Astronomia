@@ -1,0 +1,18 @@
+{% extends '..\templates\base.html' %} {% block content %}
+<a>Perfiles</a>
+
+<div class="d-flex flex-column justify-content-center align-items-center">
+  <div class="col-md-6 col-lg-5 mb-4">
+    <a href="{% url 'list_perfil' %}" class="custom-button"
+      >Ver Lista de Perfiles</a
+    >
+  </div>
+  <div class="col-md-6 col-lg-5 mb-4">
+    <a href="{% url 'regist_user' %}" class="custom-button"
+      >Crear Nuevo Perfil</a
+    >
+  </div>
+</div>
+
+<li><a href="{% url 'home' %}">Home principal</a></li>
+{% endblock %}

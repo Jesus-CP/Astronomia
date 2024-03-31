@@ -1,0 +1,91 @@
+{%extends '..\templates\base.html'%} {%block content%}
+<head>
+  <title>Galería de articuloss</title>
+</head>
+
+<br />
+<h1 class="titulo-h1">Artículos</h1>
+<hr class="titulo-hr" />
+
+<!-- ... -->
+<form class="search-form">
+  {% if user.is_authenticated %}
+  <select name="estado" class="search-select">
+    <option value="">Todo</option>
+    <option value="Publicado" {% if request.GET.estado == 'Publicado' %}selected{% endif %}>Publicado</option>
+    <option value="Borrador" {% if request.GET.estado == 'Borrador' %}selected{% endif %}>Borrador</option>
+    <option value="Archivado" {% if request.GET.estado == 'Archivado' %}selected{% endif %}>Archivado</option>
+    <!-- Agrega más estados si los tienes -->
+  </select>
+  {% endif %}
+  <input
+    class="search-input"
+    type="text"
+    name="q"
+    placeholder="Buscar por título"
+    value="{{ request.GET.q }}"
+  />
+  <button type="submit" class="search-button">Buscar</button>
+</form>
+
+<div class="galeria">
+  {% for articulo in articulos %}
+  <a href="{% url 'ver_articulos' articulo.idPublicacion %}" class="noticia-link">
+    <div class="noticia">
+      {% if articulo.imagen_portada %}
+      <img src="{{ articulo.imagen_portada.url }}" alt="{{ articulo.titulo }}" />
+      {% else %}
+      <img src="URL_de_imagen_por_defecto" alt="Placeholder" />
+      {% endif %}
+      <h2>{{ articulo.titulo }}</h2>
+      <p>{{ articulo.bajada }}</p>
+      <p >{{ articulo.fecha_creacion }}</p>
+      <p style="color: white; font-style: italic;">{{ articulo.editor.first_name }} {{ articulo.editor.last_name }}</p> 
+
+      {% if user.is_authenticated %}
+      <p style="color: #d47900">Estado: {{ articulo.estado }}</p>
+      {% endif %}
+    </div>
+  </a>
+  {% endfor %}
+
+  <!-- PAGINACION, DESCOMENTAR PARA COMENZAR A EDITAR ESTILOS -->
+
+  
+</div>
+<div class="pagination-container">
+  <div class="pagination">
+    <span>
+      {% if articulos.number > 1 %}
+        <a href="?page=1" class="pagination-link double-left" style="color: #FFA500;">&lt &lt</a>
+      {% else %}
+        <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&lt &lt</a>
+      {% endif %}
+      
+      {% if articulos.has_previous %}
+        <a href="?page={{ articulos.previous_page_number }}" class="pagination-link" style="color: #FFA500;">&lt</a>
+      {% else %}
+        <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&lt</a>
+      {% endif %}
+    </span>
+
+    <span class="pagination-text">
+      Página {{ articulos.number }}
+    </span>
+
+    <span>
+      {% if articulos.has_next %}
+        <a href="?page={{ articulos.next_page_number }}" class="pagination-link" style="color: #FFA500;">&gt</a>
+        <a href="?page={{ articulos.paginator.num_pages }}" class="pagination-link double-right" style="color: #FFA500;">&gt &gt</a>
+      {% else %}
+        <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&gt</a>
+        <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&gt &gt</a>
+      {% endif %}
+    </span>
+  </div>
+</div>
+
+  <!-- ... -->
+
+  {%endblock%}
+</div>

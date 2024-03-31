@@ -1,0 +1,96 @@
+{%extends '..\templates\base.html'%} {%block content%}
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>Galería de Noticias</title>
+</head>
+
+<br />
+<h1 class="titulo-h1">Noticias</h1>
+<hr class="titulo-hr" />
+
+<!-- ... -->
+<form class="search-form">
+  {% if user.is_authenticated %}
+  <select name="estado" class="search-select">
+    <option value="">Todo</option>
+    <option value="Publicado" {% if request.GET.estado == 'Publicado' %}selected{% endif %}>Publicado</option>
+    <option value="Borrador" {% if request.GET.estado == 'Borrador' %}selected{% endif %}>Borrador</option>
+    <option value="Archivado" {% if request.GET.estado == 'Archivado' %}selected{% endif %}>Archivado</option>
+    <!-- Agrega más estados si los tienes -->
+  </select>
+  {% endif %}
+  <input
+    class="search-input"
+    type="text"
+    name="q"
+    placeholder="Buscar por título"
+    value="{{ request.GET.q }}"
+  />
+  <button type="submit" class="search-button">Buscar</button>
+</form>
+
+<div class="galeria">
+  {% for noticia in noticias %}
+  <a href="{% url 'ver_noticias' noticia.idPublicacion %}" class="noticia-link">
+    <div class="noticia">
+      {% if noticia.imagen_portada %}
+      <img src="{{ noticia.imagen_portada.url }}" alt="{{ noticia.titulo }}" />
+      {% else %}
+      <img src="URL_de_imagen_por_defecto" alt="Placeholder" />
+      {% endif %}
+      <h2>{{ noticia.titulo }}</h2>
+      <p class="bajada">{{ noticia.bajada }}</p>
+      <p>{{ noticia.fecha_creacion }}</p>
+      <p style="color: white; font-style: italic;">{{ noticia.editor.first_name }} {{ noticia.editor.last_name }}</p>
+
+      {% if user.is_authenticated %}
+      <p style="color: #d47900">Estado: {{ noticia.estado }}</p>
+      {% endif %}
+    </div>
+  </a>
+  {% endfor %}
+</div>
+  <!-- PAGINACION, DESCOMENTAR PARA COMENZAR A EDITAR ESTILOS -->
+
+  <div class="pagination-container">
+    <div class="pagination">
+      <span>
+        {% if noticias.number > 1 %}
+          <a href="?page=1" class="pagination-link double-left" style="color: #FFA500;">&lt &lt</a>
+        {% else %}
+          <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&lt &lt</a>
+        {% endif %}
+        
+        {% if noticias.has_previous %}
+          <a href="?page={{ noticias.previous_page_number }}" class="pagination-link" style="color: #FFA500;">&lt</a>
+        {% else %}
+          <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&lt</a>
+        {% endif %}
+      </span>
+  
+      <span class="pagination-text">
+        Página {{ noticias.number }}
+      </span>
+  
+      <span>
+        {% if noticias.has_next %}
+          <a href="?page={{ noticias.next_page_number }}" class="pagination-link" style="color: #FFA500;">&gt</a>
+          <a href="?page={{ noticias.paginator.num_pages }}" class="pagination-link double-right" style="color: #FFA500;">&gt &gt</a>
+        {% else %}
+          <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&gt</a>
+          <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&gt &gt</a>
+        {% endif %}
+      </span>
+    </div>
+  </div>
+
+  <!-- ... -->
+
+  {%endblock%}
+</div>
+
+<script>
+  $(document).ready(function() {
+      // Tu script jQuery aquí
+  });
+</script>

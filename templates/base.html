@@ -1,0 +1,214 @@
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AstroNexo</title>
+  <link rel="icon" href="../core/static/assets/img/AstroNexo2.png">
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+  />
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,900;1,300&display=swap"
+    rel="stylesheet"
+  />
+</head>
+
+<!-- NavBar -->
+<body class="img">
+  <div class="container1">
+    <nav class="nav-main">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-4 col-md-4 col-lg-4">
+            <ul class="nav-menu-left">
+              <li>
+                <div class="menu-btn">
+                  <i class="bi bi-justify"></i>
+                </div>
+                <div>
+                  <a style="text-decoration: none; color: white" href="{% url 'home' %}">
+                    <img src="{% static 'assets/img/AstroNexo2.png' %}" alt="AstroWEB LOGO" class="nav-brand" />
+                  </a>
+                </div>
+                <a style="text-decoration: none; color: white" href="{% url 'home' %}">
+                  <span>AstroNexo</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4 col-lg-4">
+            <ul class="nav-menu-mid">
+              <li>
+                <a class="nav-orange" href="{% url 'home_galeria' %}"
+                  >Galería</a
+                >
+              </li>
+              <li>
+                <a class="nav-orange" href="{% url 'home_noticias' %}"
+                  >Noticias</a
+                >
+              </li>
+              <li>
+                <a class="nav-orange" href="{% url 'home_articulos' %}"
+                  >Artículos</a
+                >
+              </li>
+              <li>
+                <a class="nav-orange" href="{% url 'home_acercade' %}"
+                  >Acerca De</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            {% if user.is_authenticated %}
+            <ul class="nav-menu-right">
+              <li>
+                <a class="nav-login" href="{% url 'logout' %}">Cerrar sesión</a>
+              </li>
+            </ul>
+            {% else %}
+            <ul class="nav-menu-right">
+              <li>
+                <a class="nav-login" href="{% url 'login' %}">Iniciar sesión</a>
+              </li>
+            </ul>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+    {% if user.is_authenticated %}
+    <nav class="nav-secondary">
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="nav-menu-mid-admin">
+            <li class="nav-dropdown">
+              <a class="nav-white"
+                >Gestionar Galería <i class="bi bi-chevron-down"></i
+              ></a>
+              <ul class="dropdown-content">
+                <li><a href="{% url 'lista_galeria' %}">Lista de Fotos</a></li>
+                <li><a href="{% url 'crear_galeria' %}">Subir Foto</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a class="nav-white"
+                >Gestionar Noticias <i class="bi bi-chevron-down"></i
+              ></a>
+              <ul class="dropdown-content">
+                <li>
+                  <a href="{% url 'lista_noticias' %}">Lista de Noticias</a>
+                </li>
+                <li><a href="{% url 'crear_noticia' %}">Crear Noticia</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a class="nav-white"
+                >Gestionar Artículos <i class="bi bi-chevron-down"></i
+              ></a>
+              <ul class="dropdown-content">
+                <li>
+                  <a href="{% url 'lista_articulos' %}">Lista de Artículos</a>
+                </li>
+                <li>
+                  <a href="{% url 'crear_articulo' %}">Crear Artículos</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              {% for group in user.groups.all %} {% if group.name == "Admin" %}
+              <a class="nav-white"
+                >Gestionar Usuario<i class="bi bi-chevron-down"></i
+              ></a>
+              <ul class="dropdown-content">
+                <li><a href="{% url 'perfil' %}">Mi Perfil</a></li>
+                <li><a href="{% url 'list_perfil' %}">Lista de Usuarios</a></li>
+                <li><a href="{% url 'regist_user' %}">Crear Usuario</a></li>
+              </ul>
+              {% elif group.name == "Editor" %}
+              <a class="nav-white"
+                >Gestionar Usuario<i class="bi bi-chevron-down"></i
+              ></a>
+              <ul class="dropdown-content">
+                <li><a href="{% url 'perfil' %}">Mi Perfil</a></li>
+              </ul>
+              {% endif %} {% empty %}
+              <a class="nav-white"
+                >Gestionar Usuario<i class="bi bi-chevron-down"></i
+              ></a>
+              <ul class="dropdown-content">
+                <li><a href="{% url 'perfil' %}">Mi Perfil</a></li>
+              </ul>
+              {% endfor %}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    {% endif %}
+    <!-- Contenido -->
+
+    <div
+      class="container2 {% if user.is_authenticated %}nav2-margen{% endif %}"
+    >
+      {%block content%} {%endblock%}
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-content">
+        <a href="https://www.uautonoma.cl/">
+          <img
+              src="{% static 'assets/img/Universidad-autonoma-de-chile.png' %}"
+              alt="Universidad Autonoma"
+              class="logouautonoma"
+          />
+        </a>
+        <div class="footer-info info-divider">
+          <h3>Información de Contacto:</h3>
+          <p>comunicaciones@uautonoma.cl</p>
+          <p>223 03 6000</p>
+          <p>Avenida Pedro de Valdivia 425, Providencia</p>
+        </div>
+        <div>
+          <ul class="footer-social">
+            <li>
+              <a class="footer-apps" href="https://www.instagram.com/uautonomadechile/">
+                <i class="bi bi-instagram"></i>
+              </a>
+            </li>
+            <li>
+              <a class="footer-apps" href="https://www.linkedin.com/school/universidad-aut%C3%B3noma-de-chile/">
+                <i class="bi bi-linkedin"></i>
+              </a>
+            </li>
+            <li>
+              <a class="footer-apps" href="https://web.facebook.com/uautonomadechile?_rdc=1&_rdr">
+                <i class="bi bi-facebook"></i>
+              </a>
+            </li>          
+            <li>
+              <a class="footer-apps" href="https://twitter.com/autonomadechile">
+                <i class="bi bi-twitter"></i>
+              </a>
+            </li>
+            <li>
+              <a class="footer-apps" href="https://www.youtube.com/channel/UCKH5TRayoUI4hxBAC8-hfbQ">
+                <i class="bi bi-youtube"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="https://unpkg.com/panzoom@4.0.0/dist/panzoom.min.js"></script>
+</body>

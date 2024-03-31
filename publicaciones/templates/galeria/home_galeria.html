@@ -1,0 +1,97 @@
+{% extends '..\templates\base.html' %}
+{% block content %}
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>Galería de Noticias</title>
+  <style>
+    /* Tus estilos CSS aquí */
+  </style>
+</head>
+
+<br />
+<h1 class="titulo-h1">Galería</h1>
+<hr class="titulo-hr" />
+
+<form class="search-form">
+  {% if user.is_authenticated %}
+  <select name="estado" class="search-select">
+    <option value="">Todo</option>
+    <option value="Publicado" {% if request.GET.estado == 'Publicado' %}selected{% endif %}>Publicado</option>
+    <option value="Borrador" {% if request.GET.estado == 'Borrador' %}selected{% endif %}>Borrador</option>
+    <option value="Archivado" {% if request.GET.estado == 'Archivado' %}selected{% endif %}>Archivado</option>
+    <!-- Agrega más estados si los tienes -->
+  </select>
+  {% endif %}
+  <input
+    class="search-input"
+    type="text"
+    name="q"
+    placeholder="Buscar por título"
+    value="{{ request.GET.q }}"
+  />
+  <button type="submit" class="search-button">Buscar</button>
+</form>
+
+<div class="contenedor-galeria">
+  {% for galeria in galerias %}
+  <a href="{% url 'ver_galeria' galeria.idPublicacion %}" class="photo-link">
+    <div class="photo_container">
+      {% if galeria.imagen_portada %}
+      <img src="{{ galeria.imagen_portada.url }}" alt="{{ galeria.titulo }}" />
+      {% else %}
+      <img src="URL_de_imagen_por_defecto" alt="Placeholder" />
+      {% endif %}
+      <div class="photo_overlay">
+        <h2>{{ galeria.titulo }}</h2>
+        <p>{{ galeria.editor.first_name }} {{ galeria.editor.last_name }}</p>
+        {% if user.is_authenticated %}
+        <p>Estado: {{ galeria.estado }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+
+<!-- PAGINACION, DESCOMENTAR PARA COMENZAR A EDITAR ESTILOS -->
+
+<div class="pagination-container">
+  <div class="pagination">
+    <span>
+      {% if galerias.number > 1 %}
+        <a href="?page=1" class="pagination-link double-left" style="color: #FFA500;">&lt &lt</a>
+      {% else %}
+        <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&lt &lt</a>
+      {% endif %}
+      
+      {% if galerias.has_previous %}
+        <a href="?page={{ galerias.previous_page_number }}" class="pagination-link" style="color: #FFA500;">&lt</a>
+      {% else %}
+        <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&lt</a>
+      {% endif %}
+    </span>
+
+    <span class="pagination-text">
+      Página {{ galerias.number }}
+    </span>
+
+    <span>
+      {% if galerias.has_next %}
+        <a href="?page={{ galerias.next_page_number }}" class="pagination-link" style="color: #FFA500;">&gt</a>
+        <a href="?page={{ galerias.paginator.num_pages }}" class="pagination-link double-right" style="color: #FFA500;">&gt &gt</a>
+      {% else %}
+        <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&gt</a>
+        <a class="pagination-link" style="color: #FFFFFF; pointer-events: none;">&gt &gt</a>
+      {% endif %}
+    </span>
+  </div>
+</div>
+
+{% endblock %}
+</div>
+
+<script>
+  $(document).ready(function() {
+      // Tu script jQuery aquí
+  });
+</script>

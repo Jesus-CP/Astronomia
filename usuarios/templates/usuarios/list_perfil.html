@@ -1,0 +1,104 @@
+{% extends '..\templates\base.html' %} {% block content %}
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Noticias</title>
+  </head>
+  <div class="lista">
+    <br />
+    <h1 class="titulo-h1">Lista de Usuarios</h1>
+    <hr class="titulo-hr" />
+    <form class="search-form">
+      {% if user.is_authenticated %}
+          <select name="role" class="search-select">
+              <option value="">Todo</option>
+              <option value="Admin" {% if query_role == "Admin" %}selected{% endif %}>Admin</option>
+              <option value="Editor" {% if query_role == "Editor" %}selected{% endif %}>Editor</option>
+
+          </select>
+      {% endif %}
+      <input
+          class="search-input"
+          type="text"
+          name="q_name"
+          placeholder="Buscar por nombre"
+          value="{{ query_name }}"
+      />
+      <input
+          class="search-input"
+          type="text"
+          name="q_email"
+          placeholder="Buscar por email"
+          value="{{ query_email }}"
+      />
+      <button type="submit" class="search-button">Buscar</button>
+  </form>
+  
+    <table class="tabla-noticias">
+      <tr>
+        <th width="25%" scope="col">Nombre</th>
+        <th width="30%" scope="col">Email</th>
+        <th width="25%" scope="col">Perfil</th>
+        <th width="5%" scope="col">Editar</th>
+        <th width="5%" scope="col">Eliminar</th>
+      </tr>
+      {% for user in users %} {% if not user.is_superuser %}
+      <tr>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          {% for group in user.groups.all %} {{ group.name }} {% empty %} N/A {% endfor %}
+        </td>
+        <td>
+          <a href="{% url 'edit_perfil' user.id %}"
+            ><i class="bi bi-pencil-square"></i
+          ></a>
+        </td>
+        <td>
+          <a href="{% url 'delete_perfil' user.id %}"
+            ><i class="bi bi-x-square"></i
+          ></a>
+        </td>
+      </tr>
+      {% endif %} {% endfor %}
+    </table>
+
+    <div class="pagination-container">
+      <div class="pagination">
+        <span>
+          {% if users.has_previous %}
+          <a
+            href="?page=1{% if query %}&q={{ query }}{% endif %}"
+            class="pagination-link"
+            >&lt &lt</a
+          >
+          <a
+            href="?page={{ users.previous_page_number }}{% if query %}&q={{ query }}{% endif %}"
+            class="pagination-link"
+            >&lt</a
+          >
+          {% endif %}
+
+          <span class="pagination-text"> Página {{ users.number }} </span>
+
+          {% if users.has_next %}
+          <a
+            href="?page={{ users.next_page_number }}{% if query %}&q={{ query }}{% endif %}"
+            class="pagination-link"
+            >&gt</a
+          >
+          <a
+            href="?page={{ users.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}"
+            class="pagination-link"
+            >&gt &gt</a
+          >
+          {% endif %}
+        </span>
+      </div>
+    </div>
+  </div>
+</html>
+{% endblock %}

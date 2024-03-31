@@ -1,0 +1,34 @@
+{%extends '..\templates\base.html'%} {%block content%}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AstroNexo</title>
+
+    <!-- Contenido -->
+
+    <header>
+      <h1 class="titulo-h1">Eliminar Usuario</h1>
+    </header>
+    <div>
+      <div class="login-container">
+        <a href="{% url 'list_perfil' %}" class="icon-link"
+          ><i class="bi bi-arrow-return-left"></i
+        ></a>
+        <p style="text-aling: jusyify">
+          ¿ Estás seguro de que deseas desactivar el perfil {{ user.username }}
+          ?
+        </p>
+        <br />
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit">Sí, desactivar perfil</button>
+        </form>
+      </div>
+    </div>
+
+    {% endblock %}
+  </head>
+</html>

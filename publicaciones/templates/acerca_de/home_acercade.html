@@ -1,0 +1,14 @@
+{% extends '..\templates\base.html' %} {% block content %}
+
+<div class="noticia-container">
+  <h1 class="titulo-h1">Acerca De</h1>
+  <hr class="titulo-hr" />
+  <div class="noticia-info">
+    {% for publicacion in my_about %} {{ publicacion.cuerpo|safe }} {% endfor %}
+  </div>
+
+  {% for group in user.groups.all %} {% if group.name == "Admin" %}
+  <a class="link-editar" href="{% url 'editar_acerca_de' %}">Editar</a>
+  {% endif %} {% empty %} {% endfor %}
+</div>
+{% endblock %}

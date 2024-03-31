@@ -1,0 +1,41 @@
+{% extends "base.html" %} {# Assuming you have a base.html template for
+site-wide layout #} {% block content %}
+<div class="lista-perfil">
+  <br />
+  <h1 class="titulo-h1">Información del Usuario</h1>
+  <hr class="titulo-hr" />
+  <table class="tabla-perfil">
+    <tbody>
+      <tr>
+        <th>Nombre de usuario</th>
+        <td>{{ user.username }}</td>
+      </tr>
+      <tr>
+        <th>Nombre</th>
+        <td>{{ user.first_name }}</td>
+      </tr>
+      <tr>
+        <th>Apellido</th>
+        <td>{{ user.last_name }}</td>
+      </tr>
+      <tr>
+        <th>Correo electrónico</th>
+        <td>{{ user.email }}</td>
+      </tr>
+      <tr>
+        <th>Perfil</th>
+        <td>
+          {% for group in user.groups.all %} {{ group.name }} {% empty %} No
+          asignado a un grupo {% endfor %}
+        </td>
+      </tr>
+      <!-- Puedes agregar más campos según sea necesario -->
+    </tbody>
+  </table>
+  <div style="margin: auto">
+    <a href="{% url 'update_user_info' %}" class="link-editar">Editar</a>
+    <a href="{% url 'reset_pw' %}" class="link-editar">Cambiar contraseña</a>
+  </div>
+</div>
+
+{% endblock %}

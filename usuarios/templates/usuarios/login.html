@@ -1,0 +1,65 @@
+{%extends '..\templates\base.html'%} {%block content%}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AstroNexo</title>
+
+    <!-- Contenido -->
+
+    <header>
+      <h1 class="titulo-h1">Iniciar Sesión</h1>
+      <h2 class="titulo-h2">Introduzca sus datos</h2>
+    </header>
+    <div>
+      <div class="login-container">
+        <form method="post" class="form-login">
+          {% csrf_token %}
+          <div>
+            <label for="{{ form.usuario.id_for_label }}" class="login-1"
+              >Usuario</label
+            >
+            <input
+              type="text"
+              class="login-2"
+              id="username"
+              name="username"
+              placeholder="Ingresa tu usuario"
+              required
+            />
+          </div>
+          <div>
+            <label for="{{ form.contrasena.id_for_label }}" class="login-1"
+              >Contraseña</label
+            >
+            <input
+              type="password"
+              class="login-2"
+              id="password"
+              name="password"
+              placeholder="Ingresa tu contraseña"
+              required
+            />
+          </div>
+          {% if form.non_field_errors %}
+          <p style="color: #d47900">
+            Usuario o contraseña incorrectos, prueba de nuevo.
+          </p>
+          {% endif %}
+          <hr />
+          <button type="submit" class="button-login">Iniciar Sesión</button>
+          <br />
+          <a href="{% url 'password_reset' %}" style="margin: auto"
+            >Olvidaste tu contraseña?</a
+          >
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer -->
+
+    {% endblock %}
+  </head>
+</html>

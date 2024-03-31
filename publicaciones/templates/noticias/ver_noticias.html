@@ -1,0 +1,99 @@
+{% extends '..\templates\base.html' %}
+{% block content %}
+{% block extrascripts %}
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js">
+  </script>
+{% endblock extrascripts %}
+
+</ul>
+<div class="noticia-container">
+    <h1 class="noticia-title">{{ noticia.titulo }}</h1>
+    <h2 class="noticia-subtitle">{{ noticia.bajada }}</h2>
+    <div class="autor-container">
+        <p class="autor-name">Publicado por: {{ noticia.editor.first_name }} {{ noticia.editor.last_name }}</p>
+        <hr class="autor-line">
+        <p class="autor-date">{{ noticia.fecha_creacion }}</p>
+    </div>
+        {% if noticia.imagen_portada %}
+            <img src="{{ noticia.imagen_portada.url }}" alt="{{ noticia.titulo }}" class="noticia-image">
+        {% endif %}
+    <div class="noticia-info">
+        {{ noticia.cuerpo|safe }}
+    </div>
+
+    <div class="comentarios-container">
+        <div class="comentarios-header">
+            <h4 class="titulo-comentarios">
+                <i class="bi bi-tags icono-pequeño"></i> Etiquetas
+            </h4>
+        </div>
+        <div class="comentarios">
+            <ul class="etiquetas-list">
+                <div class="comentario">
+                    {% for tag in noticia.tags.all %}
+                    <li class="etiqueta-item">
+                        <a href="{% url 'home_noticias' %}?tag={{ tag.name }}">{{ tag.name }}</a>
+                    </li>
+                    {% empty %}
+                    <li>No hay etiquetas.</li>
+                    {% endfor %}
+                </div>
+            </ul>
+        </div>
+    </div>
+    
+    
+
+
+    <div class="comentarios-container">
+        <div class="comentarios-header">
+            <h4 class="titulo-comentarios">
+                <i class="bi bi-chat-left-text icono-pequeño"></i> Comentarios
+            </h4>
+        </div>
+        <div class="comentarios">
+            {% for comentario in comentarios %}
+                <div class="comentario">
+                    <strong>{{ comentario.email }}</strong>
+                    <p>{{ comentario.comentario }}</p>
+                    {% if user.is_authenticated %}
+                    <form method="post" class="estado-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="change_state" value="true">
+                        <input type="hidden" name="comentario_id" value="{{ comentario.id }}">
+                        <label for="is_published_{{ comentario.id }}">Publicado</label>
+                        <input type="checkbox" name="is_published" id="is_published_{{ comentario.id }}" 
+                            value="true" {% if comentario.esta_publicado %}checked{% endif %}>
+                        <button type="submit">Guardar</button>
+                    </form>
+                    
+                    <form method="post" class="estado-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="delete_comment" value="true">
+                        <input type="hidden" name="comentario_id" value="{{ comentario.id }}">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+<button id="btnCrearComentario" type="submit">Crear comentario</button>
+<div id="comentarioModal" class="modal">
+    <div class="modal-content">
+      <!-- Contenido del formulario de comentario aquí -->
+      <p>Nota: Este comentario sera visible despues de que sea examinado por un administrador</p>
+      <form method="post" class="comentario-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar comentario</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+

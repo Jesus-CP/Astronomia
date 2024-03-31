@@ -1,0 +1,108 @@
+{% extends '..\templates\base.html' %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div class="crear-noticia-container">
+      <h1 class="titulo-h1">Crear Galería</h1>
+      <hr class="titulo-hr" />
+
+      <form method="post" enctype="multipart/form-data" class="form-container">
+        {% csrf_token %}
+        <div class="contenedor-estado">
+          <div class="form-field">
+            <label for="id_estado">Estado</label>{{ galeria_form.estado }}
+          </div>
+        </div>
+        <div class="image-upload-container">
+          <label
+            for="{{ galeria_form.imagen_portada.id_for_label }}"
+            class="custom-file-upload">
+            <label for="id_imagen_portada">Imagen portada</label>
+          </label>
+          <input
+          type="file"
+          name="{{ galeria_form.imagen_portada.name }}"
+          accept="image/*"
+          id="{{ galeria_form.imagen_portada.id_for_label }}"
+          style="display: none"
+          onchange="displayImageName(this, 'current-image-name-portada');"
+          />
+          <button
+            type="button"
+            class="custom-file-button"
+            onclick="document.getElementById('{{ galeria_form.imagen_portada.id_for_label }}').click();"
+          >
+            Cargar
+          </button>
+          <div class="uploaded-image-name">
+            <span id="current-image-name-portada"></span>
+          </div>
+        </div>
+        <div class="image-upload-container">
+          <label
+            for="{{ galeria_form.imagen_marcador.id_for_label }}"
+            class="custom-file-upload">
+            <label for="id_imagen_marcador">Imagen marcador</label>
+          </label>
+          <input
+          type="file"
+          name="{{ galeria_form.imagen_marcador.name }}"
+          accept="image/*"
+          id="{{ galeria_form.imagen_marcador.id_for_label }}"
+          style="display: none"
+          onchange="displayImageName(this, 'current-image-name-marcador');"
+          />
+          <button
+            type="button"
+            class="custom-file-button"
+            onclick="document.getElementById('{{ galeria_form.imagen_marcador.id_for_label }}').click();"
+          >
+            Cargar
+          </button>
+          <div class="uploaded-image-name">
+            <span id="current-image-name-marcador"></span>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="id_tags">Tags</label> {{ galeria_form.tags }}
+        </div>
+        <div class="form-field">
+          <label for="id_titulo">Título</label>{{ galeria_form.titulo }}
+        </div>
+        <div class="form-field">
+          <label for="id_equipamiento">Equipamiento</label>{{ galeria_form.equipamiento }}
+        </div>
+        <div class="form-field">
+          <label for="id_detalle">Detalles</label>{{ galeria_form.detalle }}
+        </div>
+        <div class="form-field">
+          <label for="id_cuerpo">Descripción</label>{{ galeria_form.cuerpo }}
+        </div>
+        <div class="form-field">
+          {{ galeria_form.media.label_tag }} {{ galeria_form.media }}
+        </div>
+        <button type="submit">Guardar Cambios</button>
+      </form>
+
+      <a href="{% url 'home_galeria' %}">Home Galeria</a> |
+      <a href="{% url 'lista_galeria' %}">Lista Galeria</a>
+    </div>
+    <script>
+      function displayImageName(input, targetId) {
+        const currentImageName = document.querySelector(`#${targetId}`);
+        if (input.files.length > 0) {
+          currentImageName.textContent = input.files[0].name;
+        } else {
+          currentImageName.textContent = "";
+        }
+      }
+    </script>
+  </body>
+</html>
+{% endblock %}
